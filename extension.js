@@ -1,8 +1,21 @@
 function parseBars() {
   let bars = $('span[id^="skill-progress-xp"]');
+  while(bars.length === 0){
+    sleep(1000);
+    bars = $('span[id^="skill-progress-xp"]');
+  }
   let current_xps = {};
   let target_xps = {};
   let keys = []
+  bars.each((i, bar) => {
+    let xps = bar.textContent.replaceAll(",","").split("/")
+    let skill_id = bar.id.split("-")
+    skill_id = skill_id[skill_id.length -1]
+    current_xps[skill_id] = parseInt(xps[0],10)
+    target_xps[skill_id] = parseInt(xps[1],10)
+    keys.push(skill_id)
+  })
+  bars = $('small[id^="skill-progress-xp"]')
   bars.each((i, bar) => {
     let xps = bar.textContent.replaceAll(",","").split("/")
     let skill_id = bar.id.split("-")
@@ -26,6 +39,7 @@ function extensionUpdate(old, ext_up_interval, skills) {
   current_xps = tmp_xps[0]
   current_xps.keys.forEach((index) => {
     value = current_xps[index]
+
     if (value != old[0][index]) {
       let diff = (value - old[0][index]);
       if (old.length < memorySize) {
@@ -54,6 +68,14 @@ $(document).ready( () => {
   if($("#extension-container").length === 0){
     $("#main-container").append('<div id="extension-container" class="block block-themed mb-0 modal-dialog" style="position: fixed;margin: 5px;bottom: 5px;z-index: 999;max-width: 500px;"><h3 id="extension-header" class="block-header"> Melvor Idle Extension</h3><div id="extension-content" class="block-content block-content-full"></div></div>');
     console.log("Container Loaded");
+    $("#extension-container").on("click", ()=>{
+      if($("#extension-content").filter(":hidden").length === 0){
+          $("#extension-content").hide()
+      } else {
+        $("#extension-content").show()
+      }
+
+    });
   } else {
     console.log("Reloaded")
   }
