@@ -1,23 +1,18 @@
 {
-
   "manifest_version": 2,
   "name": "IdleExtension",
-  "version": "1.0.1",
-
-  "description": "Adds functionality to Melvor Idle",
-
+  "version": "1.0.5c",
+  "description": "Adds functionality to Melvor Idle v1.0.5c",
   "icons": {
-    "48": "Icons/icon.png"
+    "300": "Icons/icon.png"
   },
   "permissions": [
     "activeTab"
   ],
-
   "content_scripts": [
     {
       "matches": ["*://melvoridle.com/*"],
       "js": ["jquery-3.5.1.min.js", "extension.js"]
     }
   ]
-
 }
